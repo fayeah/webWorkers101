@@ -1,7 +1,7 @@
 const heavyCalculate = input => {
   // assume there is a heavey calculation
   // ...
-  return input 
+  return 'B: ' + input 
 }
 
 

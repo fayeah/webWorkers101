@@ -1,18 +1,33 @@
 var myWorker = new Worker('./worker.js');
+var workerB = new Worker('./workerB.js');
 
-const btnEl = document.getElementById('loadBtn')
+const inputAEl = document.getElementById('inputA')
+const inputBEl = document.getElementById('inputB')
+const terminateAEl = document.getElementById('terminateA')
 const contentEl = document.getElementById('content')
 let startTime;
 
-btnEl.onclick = function() {
-  startTime = new Date()
-  myWorker.postMessage([]);
+inputAEl.onchange = function() {
+  myWorker.postMessage(inputAEl.value);
   console.log('Message posted to worker');
+}
+
+inputBEl.onchange = function() {
+  myWorker.postMessage(inputBEl.value);
+  console.log('Message posted to workerB');
 }
 
 myWorker.onmessage = function(e) {
   contentEl.innerHTML = e.data;
   console.log('Message received from worker');
-  // 119 milliseconds from click to receive data from web worker
-  console.log('time diff', Math.abs(new Date() - startTime));
+}
+
+workerB.onmessage = function(e) {
+  contentEl.innerHTML = e.data;
+  console.log('Message received from workerB');
+}
+
+terminateAEl.onclick = function() {
+  myWorker.terminate()
+  workerB.terminate()
 }
